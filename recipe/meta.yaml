@@ -10,17 +10,16 @@ source:
   sha256: 73866f7f842ede6cb1daa42c4af078e2035e5f7607f0e2c762cc51bb31bbe7b2
 
 build:
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv
   number: 0
 
 requirements:
   host:
-    - python >=3.7
+    - python
     - pip
     - flit-scm
   run:
-    - python >=3.7
+    - python
 
 test:
   imports:
