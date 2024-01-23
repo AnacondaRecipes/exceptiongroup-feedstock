@@ -41,8 +41,8 @@ about:
       * Patches to the TracebackException class that properly formats exception groups (installed on import)
       * An exception hook that handles formatting of exception groups through TracebackException (installed on import)
       * Special versions of some of the functions from the traceback module"
-  license: BSD-3-Clause
-  license_family: BSD
+  license: MIT
+  license_family: MIT
   license_file: LICENSE
   dev_url: https://github.com/agronholm/exceptiongroup
   doc_url: https://docs.python.org/3/library/exceptions.html
