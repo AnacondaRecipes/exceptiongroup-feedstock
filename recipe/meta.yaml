@@ -1,5 +1,5 @@
 {% set name = "exceptiongroup" %}
-{% set version = "1.3.0" %}
+{% set version = "1.3.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: b241f5885f560bc56a59ee63ca4c6a8bfa46ae4ad651af316d4e81817bb9fd88
+  sha256: 8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219
 
 build:
   number: 0
@@ -23,6 +23,12 @@ requirements:
     - python
     - typing-extensions >=4.6.0  # [py<313]
 
+{% set skip_tests = "" %}
+# the package shims standard library BaseExceptionGroup from python 3.11 and up. this test relies on
+# an older standard library behavior that was changed in 3.13. the standard lib fix which is causing
+# issues in this test: https://github.com/python/cpython/issues/141732
+{% set skip_tests = skip_tests + " --deselect=tests/test_exceptions.py::test_exceptions_mutate_original_sequence" %}  # [py>=313]
+
 test:
   source_files:
     - tests
@@ -30,7 +36,8 @@ test:
     - exceptiongroup
   commands:
     - pip check
-    - pytest -v tests
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -vv {{ skip_tests }} tests
   requires:
     - pip
     - pytest
