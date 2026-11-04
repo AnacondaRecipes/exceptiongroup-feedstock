@@ -10,7 +10,7 @@ source:
   sha256: 8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: true  # [py<37]
 
@@ -28,6 +28,9 @@ requirements:
 # an older standard library behavior that was changed in 3.13. the standard lib fix which is causing
 # issues in this test: https://github.com/python/cpython/issues/141732
 {% set skip_tests = skip_tests + " --deselect=tests/test_exceptions.py::test_exceptions_mutate_original_sequence" %}  # [py>=313]
+# CPython 3.15 changed the AttributeError suggestion message to "Did you mean '.append'
+# instead of '.attend'?", so this test's "'append'?" assertion no longer matches.
+{% set skip_tests = skip_tests + " --deselect=tests/test_formatting.py::test_nameerror_suggestions_in_group" %}  # [py>=315]
 
 test:
   source_files:
